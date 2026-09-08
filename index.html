@@ -2,40 +2,30 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <link href="https://googleapis.com" rel="stylesheet">
 <title>Универсальный Аудио-тренажёр</title>
 <style>
 body { font-family: Arial, sans-serif; padding: 15px 5%; background-color: #f8f9fa; color: #000; margin: 0; overflow-x: hidden; }
 .container { max-width: 800px; margin: 0 auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
 h2 { font-size: 20px; margin-top: 0; margin-bottom: 15px; text-align: center; }
-
 #fileInput { display: none; }
 select { padding: 6px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; background-color: white; cursor: pointer; width: 100%; box-sizing: border-box; }
-
-/* === ВЫПАДАЮЩЕЕ МЕНЮ ИЗ ШАПКИ ТАБЛИЦЫ === */
 .menu-wrapper { position: relative; display: block; width: 100%; height: 100%; }
 .btn-menu-trigger { background: none; color: white; border: none; width: 100%; height: 100%; font-weight: bold; cursor: pointer; font-size: 18px; user-select: none; padding: 12px 0; }
 .btn-menu-trigger:hover { background-color: rgba(255, 255, 255, 0.1); }
-
 .dropdown-menu { display: none; position: absolute; left: 0; top: 100%; background-color: #ffffff; min-width: 260px; box-shadow: 0px 8px 16px rgba(0,0,0,0.15); border-radius: 6px; z-index: 1000; padding: 8px; margin-top: 4px; border: 1px solid #e2e8f0; text-align: left; }
 .dropdown-menu.show { display: block; }
-
-.menu-item { display: block; width: 100%; text-align: left; background: none; border: none; padding: 10px 12px; color: #334155; font-size: 14px; cursor: pointer; border-radius: 4px; text-decoration: none; font-weight: normal; box-sizing: border-box; }
+.menu-item { display: block; width: 100%; text-align: left; background: none; border: none; padding: 5px 8px; color: #334155; font-size: 14px; cursor: pointer; border-radius: 4px; text-decoration: none; font-weight: normal; box-sizing: border-box; }
 .menu-item:hover { background-color: #f1f5f9; color: #1e293b; }
-.menu-item:disabled { color: #cbd5e1; cursor: not-allowed; background: none; }
-
 .menu-divider { height: 1px; background-color: #e2e8f0; margin: 6px 4px; }
-.menu-label { display: flex; align-items: center; gap: 6px; cursor: pointer; padding: 8px 12px; font-size: 14px; color: #334155; font-weight: normal; }
-.menu-label input { margin: 0; }
-
+.menu-label { display: flex; align-items: center; gap: 6px; cursor: pointer; padding: 3px 5px; font-size: 14px; color: #334155; font-weight: normal; }
 .item-upload { background-color: #28a745 !important; color: white !important; font-weight: bold; text-align: center; margin-bottom: 4px; }
 .item-upload:hover { background-color: #218838 !important; }
-.item-archive { background-color: #ff9800 !important; color: white !important; font-weight: bold; text-align: center; margin-top: 4px; }
+.item-archive { background-color: #ff9800 !important; color: white !important; font-weight: bold; text-align: center; margin-top: 2px; }
 .item-archive:hover:not(:disabled) { background-color: #e65100 !important; }
-
-/* === СТИЛИ ТАБЛИЦЫ === */
+.menu-payment-block { background-color: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 6px; padding: 10px; margin: 6px 4px; font-size: 12px; line-height: 1.2; color: #334155; }
+.menu-payment-block b { color: #0f172a; }
 .hint { font-size: 13px; color: #555; text-align: center; margin-bottom: 15px; font-weight: bold; }
 .table-container { width: 100%; overflow-x: auto; border-radius: 6px; border: 1px solid #e5e7eb; }
 table { width: 100%; border-collapse: collapse; text-align: left; font-size: 15px; }
@@ -51,16 +41,13 @@ tr.playing-now { background-color: #fef08a !important; }
 .clickable-word { color: #3b82f6; cursor: pointer; text-decoration: underline; }
 .clickable-word:hover { color: #1d4ed8; background-color: #eff6ff; }
 .transcription { color: #059669; font-family: 'Courier New', Courier, monospace; font-weight: bold; }
-
 @media screen and (max-width: 480px) and (orientation: portrait) { th, td { padding: 10px 8px; font-size: 14px; } }
-
-/* === МОДАЛЬНОЕ ОКНО ИНСТРУКЦИИ === */
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; display: none; align-items: center; justify-content: center; }
-.modal-content { background: #ffffff; width: 92%; max-width: 580px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); overflow: hidden; font-family: Arial, sans-serif; }
+.modal-content { background: #ffffff; width: 92%; max-width: 580px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); overflow: hidden; }
 .modal-header { background-color: #4a76a8; color: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
 .modal-header h2 { margin: 0; font-size: 16px; text-align: left; }
 .modal-close-x { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
-.modal-body { padding: 15px 20px; max-height: 420px; overflow-y: auto; font-size: 14px; color: #333; line-height: 1.45; }
+.modal-body { padding: 15px 20px; max-height: 700px; overflow-y: auto; font-size: 14px; color: #333; line-height: 1.45; }
 .modal-body ol { margin: 0; padding-left: 20px; }
 .modal-body li { margin-bottom: 12px; }
 .modal-footer { padding: 12px; text-align: center; border-top: 1px solid #e5e7eb; }
@@ -68,6 +55,8 @@ tr.playing-now { background-color: #fef08a !important; }
 .btn-understand:hover { background-color: #3b5e85; }
 </style>
 </head>
+<!--  КОНЕЦ ЧАСТИ 1  -->
+
 <body>
 <div id="instructionModal" class="modal-overlay">
 <div class="modal-content">
@@ -83,14 +72,10 @@ tr.playing-now { background-color: #fef08a !important; }
 </div>
 </div>
 </div>
-<!-- КОНЕЦ ЧАСТИ 1 -->
-
 <div class="container">
 <h2>Таблица слов: Универсальный тренажёр</h2>
 <div class="hint">Управляйте настройками и скоростью на панели ниже. Кликайте по словам!</div>
-
 <input type="file" id="fileInput" accept=".txt">
-
 <div class="table-container">
 <table id="wordsTable">
 <thead>
@@ -100,7 +85,6 @@ tr.playing-now { background-color: #fef08a !important; }
 <button class="btn-menu-trigger" onclick="toggleDropdown(event)">☰</button>
 <div class="dropdown-menu" id="mainDropdownMenu">
 <button class="menu-item item-upload" onclick="document.getElementById('fileInput').click()">Загрузить файл (.txt)</button>
-
 <div class="menu-label">
 <input type="radio" name="fileFormat" id="fmtWithTrans" value="with-trans" checked onchange="updateTableStructure()">
 <label for="fmtWithTrans">С транскрипцией</label>
@@ -109,6 +93,7 @@ tr.playing-now { background-color: #fef08a !important; }
 <input type="radio" name="fileFormat" id="fmtNoTrans" value="no-trans" onchange="updateTableStructure()">
 <label for="fmtNoTrans">Без транскрипции</label>
 </div>
+<!-- Конец Части 2 -->
 
 <div class="menu-label" style="flex-direction: column; align-items: flex-start; gap: 4px;">
 <span style="font-size: 12px; font-weight: bold; color: #64748b;">Язык озвучки:</span>
@@ -122,22 +107,24 @@ tr.playing-now { background-color: #fef08a !important; }
 <option value="zh-CN">cn CN Китайский</option>
 </select>
 </div>
-
 <div class="menu-label" style="flex-direction: column; align-items: flex-start; gap: 4px; margin-top: 4px;">
 <span style="font-size: 12px; font-weight: bold; color: #64748b;">Скорость озвучки: <span id="topSpeedValue">0.9</span></span>
 <input type="range" id="topSpeedRate" min="0.5" max="2.0" step="0.1" value="0.9" style="width: 100%; cursor: pointer; margin: 0;" oninput="document.getElementById('topSpeedValue').innerText = this.value">
 </div>
-
 <div class="menu-divider"></div>
-
-<button class="menu-item" id="btnSequence" onclick="startTrainer('sequence')" disabled><span class="material-icons" style="font-size:14px; vertical-align: middle;">playlist_play</span> По порядку</button>
+<button class="menu-item" id="btnSequence" onclick="startTrainer('sequence')" disabled>▶ По порядку</button>
 <button class="menu-item" id="btnRandom" onclick="startTrainer('random')" disabled>🎲 Случайно</button>
 <button class="menu-item" id="btnStop" onclick="stopTrainer()">⏹ Стоп</button>
-
 <div class="menu-divider"></div>
-
 <button class="menu-item" onclick="toggleInstructionModal(true)">ℹ Инструкция</button>
 <button class="menu-item item-archive" id="btnArchive" onclick="saveTableToZip()" disabled>📦 Сохранить тренажёр (.html)</button>
+<div class="menu-divider"></div>
+<div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e0e0e0; text-align: center;">
+<span style="font-size: 13px; color: #666; display: block; margin-bottom: 5px;">Поддержать проект:</span>
+<b style="font-size: 12px; color: #333; background: #f5f5f5; padding: 4px 8px; border-radius: 4px; border: 1px dashed #ccc;">
+ЮMoney: 4100119623033804 
+</b>
+</div>
 </div>
 </div>
 </th>
@@ -150,536 +137,269 @@ tr.playing-now { background-color: #fef08a !important; }
 </table>
 </div>
 </div>
+<!-- Конец Части 3 -->
 
 <script>
 var loadedWords = [];
-var loadedData = []; 
+var loadedData = [];
 var trainerTimeout = null;
 var isTrainerRunning = false;
 var originalHeaderTitle = "Тема";
-// КОНЕЦ ЧАСТИ 2
-
 var instructionData = [
-"<b>Готовим списки слов:</b> Список с транскрипцией: Слово - Транскрипция - Перевод; Список без транскрипции: Слово - Перевод, где первая строка служебная. Сохраняем нужный вам список в папку на компьютере.",
-"<b>Запускаем Таблицу слов:</b> Универсальный тренажёр кликаем по значку прямо в шапке таблицы, открывается выпадающий список настроек.",
-"<b>Настройка формата таблицы:</b> Выбираем список с транскрипцией или без транскрипции и язык озвучки, затем кликаем по кнопке 'Загрузить файл (.txt)'.",
-"<b>Выбор файла:</b> Открывается ваш диск и вы должны указать папку и выбрать сохраненный список слов.",
-"<b>Импорт:</b> Моментально из вашего списка сформируется таблица слов с озвучкой!",
-"<b>Ручной режим:</b> Кликая по иностранным словам в таблице - слова озвучиваются.",
-"<b>Автоматическая озвучка слов:</b> Открываем меню в таблице, нажимаем 'По порядку' или 'Случайно'.",
-"<b>Остановка автоматической озвучки:</b> Прекращается озвучка слов по окончании списка или по кнопке 'Стоп'.",
-"<b>Понимание слов на слух:</b> Вы говорите перевод озвученного слова члену семьи или другу."
+"<b>Готовим списки слов:</b> Список с транскрипцией: Слово - Траскрипция - Перевод; Список без транскрипции: Слово - Перевод. Сохраняем в .txt.",
+"<b>Запускаем Таблицу слов:</b> Кликаем по значку ☰ в шапке таблицы.",
+"<b>Настройка формата таблицы:</b> Выбираем формат, язык и нажимаем 'Загрузить файл (.txt)'.",
+"<b>Выбор файла:</b> Укажите ваш сохраненный список слов.",
+"<b>Импорт:</b> Из вашего списка мгновенно сформируется таблица.",
+"<b>Ручной режим:</b> Кликайте по иностранным словам для озвучки.",
+"<b>Автоматическая озвучка:</b> Открываем меню, нажимаем 'По порядку' или 'Случайно'.",
+"<b>Остановка озвучки:</b> Кнопка 'Стоп'.",
+"<b>Понимание слов:</b> Вы говорите перевод услышанного слова члену семьи или другу и контролируете по таблице."
 ];
 
 function toggleDropdown(e) {
-if(e) e.stopPropagation();
-var menu = document.getElementById('mainDropdownMenu');
-if(!menu) return;
-var btn = e.target;
-var rect = btn.getBoundingClientRect();
-menu.style.position = 'fixed';
-menu.style.top = rect.bottom + 'px';
-menu.style.left = rect.left + 'px';
-menu.classList.toggle('show');
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  var menu = document.getElementById('mainDropdownMenu');
+  if (!menu) return;
+  var btn = e.currentTarget || e.target;
+  var rect = btn.getBoundingClientRect();
+  menu.style.position = 'fixed';
+  menu.style.top = rect.bottom + 'px';
+  menu.style.left = rect.left + 'px';
+  menu.classList.toggle('show');
 }
 
 window.addEventListener('click', function() {
-var menu = document.getElementById('mainDropdownMenu');
-if(menu) menu.classList.remove('show');
+  var menu = document.getElementById('mainDropdownMenu');
+  if(menu) menu.classList.remove('show');
 });
 
 document.getElementById('mainDropdownMenu').addEventListener('click', function(e) {
-if(e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT' || e.target.closest('.menu-label')) {
-e.stopPropagation();
-}
+  if(e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT' || e.target.closest('.menu-label')) {
+    e.stopPropagation();
+  }
 });
 
 function toggleInstructionModal(show) {
-document.getElementById('instructionModal').style.display = show ? 'flex' : 'none';
+  document.getElementById('instructionModal').style.display = show ? 'flex' : 'none';
 }
 
 function speak(text, onEndCallback) {
-if (!text) return;
-window.speechSynthesis.cancel();
-var utterance = new SpeechSynthesisUtterance(text);
-utterance.lang = document.getElementById('langSelect').value;
-utterance.rate = parseFloat(document.getElementById('topSpeedRate').value);
-if (onEndCallback) { utterance.onend = onEndCallback; }
-window.speechSynthesis.speak(utterance);
+  if (!text) return;
+  window.speechSynthesis.cancel();
+  var utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = document.getElementById('langSelect').value;
+  utterance.rate = parseFloat(document.getElementById('topSpeedRate').value);
+  if (onEndCallback) { utterance.onend = onEndCallback; }
+  window.speechSynthesis.speak(utterance);
 }
+// Конец Части 4
 
 function startTrainer(mode) {
-if (loadedWords.length === 0) return;
-stopTrainer();
-isTrainerRunning = true;
-var menu = document.getElementById('mainDropdownMenu');
-if(menu) menu.classList.remove('show');
-
-var indexQueue = [];
-for (var i = 0; i < loadedWords.length; i++) { indexQueue.push(i); }
-if (mode === 'random') {
-indexQueue.sort(function() { return Math.random() - 0.5; });
-}
-
-var currentQueuePosition = 0;
-function playNext() {
-if (!isTrainerRunning || currentQueuePosition >= indexQueue.length) {
-stopTrainer();
-return;
-}
-var rows = document.querySelectorAll('#tableBody tr');
-rows.forEach(function(r) { r.classList.remove('playing-now'); });
-
-var targetIndex = indexQueue[currentQueuePosition];
-var targetRow = rows[targetIndex];
-var wordToSpeak = loadedWords[targetIndex];
-
-if (targetRow) {
-targetRow.classList.add('playing-now');
-targetRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-speak(wordToSpeak, function() {
-currentQueuePosition++;
-trainerTimeout = setTimeout(playNext, 500);
-});
-}
-playNext();
+  if (loadedWords.length === 0) return;
+  stopTrainer();
+  isTrainerRunning = true;
+  var menu = document.getElementById('mainDropdownMenu');
+  if(menu) menu.classList.remove('show');
+  var indexQueue = [];
+  for (var i = 0; i < loadedWords.length; i++) { indexQueue.push(i); }
+  if (mode === 'random') { indexQueue.sort(function() { return Math.random() - 0.5; }); }
+  var currentQueuePosition = 0;
+  function playNext() {
+    if (!isTrainerRunning || currentQueuePosition >= indexQueue.length) { stopTrainer(); return; }
+    var rows = document.querySelectorAll('#tableBody tr');
+    rows.forEach(function(r) { r.classList.remove('playing-now'); });
+    var targetIndex = indexQueue[currentQueuePosition];
+    var targetRow = rows[targetIndex];
+    var wordToSpeak = loadedWords[targetIndex];
+    if (targetRow) {
+      targetRow.classList.add('playing-now');
+      targetRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    speak(wordToSpeak, function() {
+      currentQueuePosition++;
+      trainerTimeout = setTimeout(playNext, 1500);
+    });
+  }
+  playNext();
 }
 
 function stopTrainer() {
-isTrainerRunning = false;
-clearTimeout(trainerTimeout);
-window.speechSynthesis.cancel();
-var rows = document.querySelectorAll('#tableBody tr');
-rows.forEach(function(r) { r.classList.remove('playing-now'); });
+  isTrainerRunning = false;
+  clearTimeout(trainerTimeout);
+  window.speechSynthesis.cancel();
+  var rows = document.querySelectorAll('#tableBody tr');
+  rows.forEach(function(r) { r.classList.remove('playing-now'); });
 }
 
 function updateTableStructure() {
-var headerRow = document.getElementById('headerRow');
-var format = document.querySelector('input[name="fileFormat"]:checked').value;
-
-while (headerRow.children.length > 1) {
-headerRow.removeChild(headerRow.lastChild);
-}
-
-var th1 = document.createElement('th');
-th1.innerText = "Иностранное слово";
-headerRow.appendChild(th1);
-
-if (format === 'with-trans') {
-var th2 = document.createElement('th');
-th2.innerText = "Транскрипция";
-headerRow.appendChild(th2);
-}
-
-var th3 = document.createElement('th');
-th3.innerText = "Перевод";
-headerRow.appendChild(th3);
-
-renderTableBody();
+  var headerRow = document.getElementById('headerRow');
+  var format = document.querySelector('input[name="fileFormat"]:checked').value;
+  while (headerRow.children.length > 1) { headerRow.removeChild(headerRow.lastChild); }
+  var th1 = document.createElement('th'); th1.innerText = "Иностранное слово";
+  headerRow.appendChild(th1);
+  if (format === 'with-trans') { var th2 = document.createElement('th'); th2.innerText = "Транскрипция"; headerRow.appendChild(th2); }
+  var th3 = document.createElement('th'); th3.innerText = "Перевод";
+  headerRow.appendChild(th3);
+  renderTableBody();
 }
 
 function renderTableBody() {
-var tableBody = document.getElementById('tableBody');
-if (!tableBody) return;
-tableBody.innerHTML = '';
-loadedWords = [];
-
-var format = document.querySelector('input[name="fileFormat"]:checked').value;
-var num = 1;
-
-loadedData.forEach(function(item) {
-loadedWords.push(item.word);
-var tr = document.createElement('tr');
-
-if (format === 'with-trans') {
-tr.innerHTML = '<td style="text-align:center;color:#666;font-size:14px;">' + num + '</td>' +
-'<td><span class="clickable-word" onclick="speak(\'' + item.word.replace(/'/g, "\\'") + '\')"><b>' + item.word + '</b></span></td>' +
-'<td class="transcription">' + item.trans + '</td>' +
-'<td>' + item.translation + '</td>';
-} else {
-tr.innerHTML = '<td style="text-align:center;color:#666;font-size:14px;">' + num + '</td>' +
-'<td><span class="clickable-word" onclick="speak(\'' + item.word.replace(/'/g, "\\'") + '\')"><b>' + item.word + '</b></span></td>' +
-'<td>' + item.translation + '</td>';
+  var tableBody = document.getElementById('tableBody'); if (!tableBody) return;
+  tableBody.innerHTML = ''; loadedWords = [];
+  var format = document.querySelector('input[name="fileFormat"]:checked').value; var num = 1;
+  loadedData.forEach(function(item) {
+    loadedWords.push(item.word); var tr = document.createElement('tr');
+    if (format === 'with-trans') {
+      tr.innerHTML = '<td style="text-align:center;color:#666;font-size:14px;">' + num + '</td>' +
+      '<td><span class="clickable-word" onclick="speak(\'' + item.word.replace(/'/g, "\\'") + '\')"><b>' + item.word + '</b></span></td>' +
+      '<td class="transcription">' + item.trans + '</td>' +
+      '<td>' + item.translation + '</td>';
+    } else {
+      tr.innerHTML = '<td style="text-align:center;color:#666;font-size:14px;">' + num + '</td>' +
+      '<td><span class="clickable-word" onclick="speak(\'' + item.word.replace(/'/g, "\\'") + '\')"><b>' + item.word + '</b></span></td>' +
+      '<td>' + item.translation + '</td>';
+    }
+    tableBody.appendChild(tr); num++;
+  });
+  var hasData = loadedData.length > 0;
+  document.getElementById('btnSequence').disabled = !hasData;
+  document.getElementById('btnRandom').disabled = !hasData;
+  document.getElementById('btnArchive').disabled = !hasData;
 }
-tableBody.appendChild(tr);
-num++;
-});
-
-var hasData = loadedData.length > 0;
-document.getElementById('btnSequence').disabled = !hasData;
-document.getElementById('btnRandom').disabled = !hasData;
-document.getElementById('btnArchive').disabled = !hasData;
-}
-// КОНЕЦ ЧАСТИ 3
 
 function saveTableToZip() {
-var tableBody = document.getElementById('tableBody');
-if (!tableBody || tableBody.children.length === 0) return;
+  var tableBody = document.getElementById('tableBody'); if (!tableBody || tableBody.children.length === 0) return;
+  var userFileName = prompt("Введите название для сохраняемого файла:", originalHeaderTitle); if (userFileName === null) return;
+  userFileName = userFileName.trim() || "Таблица слов";
+  var selectedLang = document.getElementById('langSelect').value;
+  var currentFormat = document.querySelector('input[name="fileFormat"]:checked').value;
+  var archiveSpeed = document.getElementById('topSpeedRate').value;
 
-var userFileName = prompt(
-"Введите название для сохраняемого файла:", 
-originalHeaderTitle
-);
-if (userFileName === null) return;
-userFileName = userFileName.trim() || "Таблица слов";
+  var cssStyles = "body { font-family: Arial, sans-serif; padding: 15px 5%; background: #f8f9fa; margin: 0; overflow-x: hidden; }" +
+    ".container { max-width: 800px; margin: 0 auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }" +
+    "h2 { font-size: 20px; text-align: center; color: #334155; margin-top: 0; margin-bottom: 15px; }" +
+    ".menu-wrapper { position: relative; display: block; width: 100%; height: 100%; }" +
+    ".btn-menu-trigger { background: none; color: white; border: none; width: 100%; height: 100%; font-weight: bold; cursor: pointer; font-size: 20px; user-select: none; padding: 10px 0; line-height: 1; }" +
+    ".btn-menu-trigger:hover { background-color: rgba(255, 255, 255, 0.1); }" +
+    ".dropdown-menu { display: none; position: fixed !important; background-color: #ffffff; min-width: 260px; box-shadow: 0px 8px 16px rgba(0,0,0,0.15); border-radius: 6px; z-index: 2000; padding: 8px; border: 1px solid #e2e8f0; text-align: left; }" +
+    ".dropdown-menu.show { display: block; }" +
+    ".menu-item { display: block; width: 100%; text-align: left; background: none; border: none; padding: 10px 12px; color: #334155; font-size: 14px; cursor: pointer; border-radius: 4px; box-sizing: border-box; text-decoration: none; font-weight: normal; }" +
+    ".menu-item:hover { background-color: #f1f5f9; color: #1e293b; }" +
+    ".menu-divider { height: 1px; background-color: #e2e8f0; margin: 6px 4px; }" +
+    ".menu-label { display: flex; align-items: center; gap: 6px; cursor: pointer; padding: 8px 12px; font-size: 14px; color: #334155; font-weight: normal; }" +
+    ".menu-payment-block { background-color: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 6px; padding: 10px; margin: 6px 4px; font-size: 12px; line-height: 1.4; color: #334155; }" +
+    ".menu-payment-block b { color: #0f172a; }" +
+    ".hint { font-size: 13px; color: #555; text-align: center; margin-bottom: 15px; font-weight: bold; }" +
+    ".table-container { width: 100%; overflow-x: auto; border-radius: 6px; border: 1px solid #e5e7eb; }" +
+    "table { width: 100%; border-collapse: collapse; background: #fff; text-align: left; font-size: 15px; }" +
+    "th, td { padding: 12px 15px; border-bottom: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb; }" +
+    "th:first-child, td:first-child { border-left: 1px solid #e5e7eb; }" +
+    "th { background: #4a76a8; color: white; font-weight: bold; border-right: 1px solid rgba(255, 255, 255, 0.2); }" +
+    "th:last-child { border-right: none; }tbody tr:nth-of-type(even) { background: #f5f7fa; }" +
+    "tr { transition: background-color 0.3s; }" +
+    "tr.playing-now { background-color: #fef08a !important; }" +
+    ".clickable-word { color: #3b82f6; cursor: pointer; text-decoration: underline; font-weight: bold; }" +
+    ".clickable-word:hover { color: #1d4ed8; background-color: #eff6ff; }" +
+    ".transcription { color: #059669; font-family: monospace; font-weight: bold; }" +
+    ".menu-th { width: 50px; text-align: center; padding: 0; user-select: none; }" +
+    ".modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 3000; display: none; align-items: center; justify-content: center; }" +
+    ".modal-content { background: #ffffff; width: 92%; max-width: 550px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); overflow: hidden; color: #000; }" +
+    ".modal-header { background-color: #4a76a8; color: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }" +
+    ".modal-header h2 { margin: 0; font-size: 16px; }" +
+    ".modal-close-x { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }" +
+    ".modal-body { padding: 15px 20px; max-height: 380px; overflow-y: auto; font-size: 14px; line-height: 1.45; }" +
+    ".modal-body ol { margin: 0; padding-left: 20px; }" +
+    ".modal-body li { margin-bottom: 10px; }" +
+    ".modal-footer { padding: 10px; text-align: center; border-top: 1px solid #e5e7eb; }" +
+    ".modal-overlay .btn-understand { background-color: #4a76a8; color: white; border: none; padding: 8px 25px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 13px; }" +
+    "@media screen and (max-width: 480px) and (orientation: portrait) { th, td { padding: 10px 8px; font-size: 14px; } }";
+// Конец Части 5
 
-var selectedLang = document.getElementById('langSelect').value;
-var currentFormat = document.querySelector(
-'input[name="fileFormat"]:checked'
-).value;
-var archiveSpeed = document.getElementById('topSpeedRate').value;
+  var htmlContent = "<!DOCTYPE html><html lang='ru'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>" + userFileName + "</title><style>" + cssStyles + "</style></head><body>";
 
-var htmlContent = "<!DOCTYPE " + "html>\n<html lang='ru'>\n" +
-"<head>\n<meta charset='UTF-8'>\n";
-htmlContent += "<meta name='viewport' content='width=" +
-"device-width, initial-scale=1.0'>\n";
-htmlContent += "<title>" + userFileName + "</title>\n<style>\n";
-htmlContent += "body { font-family: Arial, sans-serif; " +
-"padding: 15px 5%; background: #f8f9fa; margin: 0; " +
-"overflow-x: hidden; }\n";
-htmlContent += ".container { max-width: 800px; margin: 0 auto; " +
-"background: #ffffff; padding: 20px; border-radius: 8px; " +
-"box-shadow: 0 2px 10px rgba(0,0,0,0.05); }\n";
-htmlContent += "h2 { font-size: 20px; text-align: center; " +
-"color: #334155; margin-top: 0; margin-bottom: 15px; }\n";
+  htmlContent += "<div class='container'><h2>" + userFileName + "</h2><div class='hint'>Нажмите на ☰ в оглавлении таблицы для настроек. Кликайте по словам!</div><div class='table-container' id='archTableContainer'><table><thead><tr><th class='menu-th'> <div class='menu-wrapper'> <button class='btn-menu-trigger' onclick='toggleMenu(event, this)'>☰</button> <div class='dropdown-menu' id='archDropdownMenu'> <div class='menu-label' style='flex-direction: column; align-items: flex-start; gap: 4px; margin-bottom: 6px;'> <span style='font-size: 12px; font-weight: bold; color: #64748b;'>Скорость озвучки: <span id='archSpeedValue'>" + archiveSpeed + "</span></span> <input type='range' id='archSpeedRate' min='0.5' max='2.0' step='0.1' value='" + archiveSpeed + "' style='width: 100%; cursor: pointer; margin: 0;' oninput='document.getElementById(\"archSpeedValue\").innerText = this.value'> </div> <div class='menu-divider'></div> <button class='menu-item' onclick='startAuto(\"sequence\")'>▶ По порядку</button> <button class='menu-item' onclick='startAuto(\"random\")'>🎲 Случайно</button> <button class='menu-item' onclick='stopAuto()'>⏹ Стоп</button> <button class='menu-item' onclick='toggleModal(true)' style='border-top:1px solid #e2e8f0; color:#3b82f6;'>ℹ Инструкция</button> <div class='menu-divider'></div> <div class=\'menu-payment-block\' style=\'text-align: center; font-size: 13px;\'>Поддержать проект:<br><b style=\'background: #f5f5f5; padding: 2px 6px; border-radius: 4px; border: 1px dashed #ccc; display: inline-block; margin-top: 4px;\'>ЮMoney: 4100119623033804</b></div> </div> </div></th><th>Иностранное слово</th>";
 
-htmlContent += ".menu-wrapper { position: relative; display: " +
-"block; width: 100%; height: 100%; }\n";
-htmlContent += ".btn-menu-trigger { background: none; " +
-"color: white; border: none; width: 100%; height: 100%; " +
-"font-weight: bold; cursor: pointer; font-size: 20px; " +
-"user-select: none; padding: 10px 0; line-height: 1; }\n";
-htmlContent += ".btn-menu-trigger:hover { background-color: " +
-"rgba(255, 255, 255, 0.1); }\n";
-htmlContent += ".dropdown-menu { display: none; position: " +
-"fixed !important; background-color: #ffffff; min-width: " +
-"260px; box-shadow: 0px 8px 16px rgba(0,0,0,0.15); " +
-"border-radius: 6px; z-index: 2000; padding: 8px; border: " +
-"1px solid #e2e8f0; text-align: left; }\n";
-htmlContent += ".dropdown-menu.show { display: block; }\n";
-htmlContent += ".menu-item { display: block; width: 100%; " +
-"text-align: left; background: none; border: none; padding: " +
-"10px 12px; color: #334155; font-size: 14px; cursor: pointer; " +
-"border-radius: 4px; box-sizing: border-box; text-decoration: " +
-"none; font-weight: normal; }\n";
-htmlContent += ".menu-item:hover { background-color: #f1f5f9; " +
-"color: #1e293b; }\n";
-htmlContent += ".menu-divider { height: 1px; background-color: " +
-"#e2e8f0; margin: 6px 4px; }\n";
-htmlContent += ".menu-label { display: flex; align-items: " +
-"center; gap: 6px; cursor: pointer; padding: 8px 12px; " +
-"font-size: 14px; color: #334155; font-weight: normal; }\n";
+  if (currentFormat === 'with-trans') { htmlContent += "<th>Транскрипция</th>"; }
+  htmlContent += "<th>Перевод</th></tr></thead><tbody>";
 
-htmlContent += ".hint { font-size: 13px; color: #555; " +
-"text-align: center; margin-bottom: 15px; font-weight: bold; }\n";
-htmlContent += ".table-container { width: 100%; overflow-x: auto; " +
-"overflow-y: visible !important; border-radius: 6px; border: " +
-"1px solid #e5e7eb; }\n";
-htmlContent += "table { width: 100%; border-collapse: collapse; " +
-"background: #fff; text-align: left; font-size: 15px; " +
-"overflow: visible !important; }\n";
-htmlContent += "th, td { padding: 12px 15px; border-bottom: " +
-"1px solid #e5e7eb; border-right: 1px solid #e5e7eb; }\n";
-htmlContent += "th:first-child, td:first-child { border-left: " +
-"1px solid #e5e7eb; }\n";
-htmlContent += "th { background: #4a76a8; color: white; " +
-"font-weight: bold; border-right: 1px solid " +
-"rgba(255, 255, 255, 0.2); }\n";
-htmlContent += "th:last-child { border-right: none; }\n";
-htmlContent += "tbody tr:nth-of-type(even) { background: " +
-"#f5f7fa; }\n";
-htmlContent += "tr { transition: background-color 0.3s; }\n";
-htmlContent += "tr.playing-now { background-color: " +
-"#fef08a !important; }\n";
-htmlContent += ".clickable-word { color: #3b82f6; cursor: " +
-"pointer; text-decoration: underline; font-weight: bold; }\n";
-htmlContent += ".clickable-word:hover { color: #1d4ed8; " +
-"background-color: #eff6ff; }\n";
-htmlContent += ".transcription { color: #059669; " +
-"font-family: monospace; font-weight: bold; }\n";
-htmlContent += ".menu-th { width: 50px; text-align: center; " +
-"padding: 0; user-select: none; overflow: visible " +
-"!important; }\n";
-// КОНЕЦ ЧАСТИ 4
+  var rows = document.querySelectorAll('#tableBody tr');
+  rows.forEach(function(row, idx) {
+    var firstCell = row.querySelector('td'); var wordCell = firstCell.nextElementSibling;
+    var transCell = wordCell.nextElementSibling; var translationCell = transCell.nextElementSibling;
+    var num = idx + 1; var wordText = wordCell.innerText.trim(); var escapedWord = wordText.replace(/'/g, "\\\\'");
+    htmlContent += "<tr><td style='text-align:center; color:#666;'>" + num + "</td><td><span class='clickable-word' onclick=\"speak('" + escapedWord + "', this.parentNode.parentNode)\">" + wordText + "</span></td>";
+    if (currentFormat === 'with-trans' && translationCell) { htmlContent += "<td class='transcription'>" + transCell.innerText.trim() + "</td><td>" + translationCell.innerText.trim() + "</td>"; }
+    else { htmlContent += "<td>" + transCell.innerText.trim() + "</td>"; }
+    htmlContent += "</tr>";
+  });
 
-htmlContent += ".modal-overlay { position: fixed; top: 0; " +
-"left: 0; width: 100%; height: 100%; background: " +
-"rgba(0,0,0,0.5); z-index: 3000; display: none; " +
-"align-items: center; justify-content: center; }\n";
-htmlContent += ".modal-content { background: #ffffff; width: " +
-"92%; max-width: 550px; border-radius: 8px; box-shadow: " +
-"0 4px 20px rgba(0,0,0,0.2); overflow: hidden; " +
-"color: #000; }\n";
-htmlContent += ".modal-header { background-color: #4a76a8; " +
-"color: white; padding: 12px 20px; display: flex; " +
-"justify-content: space-between; align-items: center; }\n";
-htmlContent += ".modal-header h2 { margin: 0; font-size: 16px; }\n";
-htmlContent += ".modal-close-x { background: none; border: " +
-"none; color: white; font-size: 24px; cursor: pointer; }\n";
-htmlContent += ".modal-body { padding: 15px 20px; max-height: " +
-"380px; overflow-y: auto; font-size: 14px; line-height: " +
-"1.45; }\n";
-htmlContent += ".modal-body ol { margin: 0; padding-left: " +
-"20px; }\n";
-htmlContent += ".modal-body li { margin-bottom: 10px; }\n";
-htmlContent += ".modal-footer { padding: 10px; text-align: " +
-"center; border-top: 1px solid #e5e7eb; }\n";
-htmlContent += ".modal-overlay .btn-understand { background-" +
-"color: #4a76a8; color: white; border: none; padding: 8px " +
-"25px; border-radius: 4px; font-weight: bold; cursor: " +
-"pointer; font-size: 13px; }\n";
-htmlContent += "@media screen and (max-width: 480px) and " +
-"(orientation: portrait) { th, td { padding: 10px 8px; " +
-"font-size: 14px; } }\n";
-htmlContent += "</style>\n</head>\n<body>\n";
-htmlContent += "<div class='container'>\n<h2>" + 
-userFileName + "</h2>\n<div class='hint'>Нажмите на ☰ в " +
-"оглавлении таблицы для настроек. Кликайте по словам!</div>\n";
+  htmlContent += "</tbody></table></div></div><div id='instModal' class='modal-overlay'><div class='modal-content'><div class='modal-header'><h2>Инструкция</h2><button class='modal-close-x' onclick='toggleModal(false)'>×</button></div><div class='modal-body'><ol><li><b>Ручной режим:</b> Кликайте по словам для озвучки.</li><li><b>Авто:</b> Кнопки 'По порядку' или 'Случайно' в меню ☰.</li><li><b>Стоп:</b> Кнопка 'Стоп'.</li><li><b>Понимание слов:</b> Вы говорите перевод услышанного слова члену семьи или другу и он контролирует по таблице.</li></ol></div><div class='modal-footer'><button class='btn-understand' onclick='toggleModal(false)'>Понятно</button></div></div></div>";
 
-htmlContent += "<div class='table-container' " +
-"id='archTableContainer'>\n<table>\n<thead>\n<tr>\n" +
-"<th class='menu-th'>\n <div class='menu-wrapper'>\n" +
-" <button class='btn-menu-trigger' onclick='toggleMenu(" +
-"event, this)'>☰</button>\n <div class='dropdown-menu' " +
-"id='archDropdownMenu'>\n";
+  var wordsArray = []; 
+  rows.forEach(function(row) { 
+    var firstCell = row.querySelector('td'); 
+    wordsArray.push(firstCell.nextElementSibling.innerText.trim()); 
+  });
 
-// ИСПРАВЛЕНО: Движок скорости перенесен внутрь меню сохраненного файла
-htmlContent += " <div class='menu-label' style='flex-direction: column; align-items: flex-start; gap: 4px; margin-bottom: 6px;'>\n" +
-" <span style='font-size: 12px; font-weight: bold; color: #64748b;'>Скорость озвучки: <span id=\"archSpeedValue\">" + archiveSpeed + "</span></span>\n" +
-" <input type=\"range\" id=\"archSpeedRate\" min=\"0.5\" max=\"2.0\" step=\"0.1\" value=\"" + archiveSpeed + "\" style=\"width: 100%; cursor: pointer; margin: 0;\" oninput=\"document.getElementById('archSpeedValue').innerText = this.value\">\n" +
-" </div>\n";
+  var scriptCode = "var tTimeout = null; var isRunning = false;\n" +
+    "var rawWords = " + JSON.stringify(wordsArray) + ";\n" +
+    "function speak(t, row) { window.speechSynthesis.cancel(); if(row) { document.querySelectorAll('tbody tr').forEach(e=>e.classList.remove('playing-now')); row.classList.add('playing-now'); } var u = new SpeechSynthesisUtterance(t); u.lang = '" + selectedLang + "'; u.rate = document.getElementById('archSpeedRate').value; window.speechSynthesis.speak(u); }\n" +
+    "function toggleMenu(e, btn) { if(e) { e.preventDefault(); e.stopPropagation(); } var el = document.getElementById('archDropdownMenu'); if(!el) return; var rect = btn.getBoundingClientRect(); el.style.position = 'fixed'; el.style.top = rect.bottom + 'px'; el.style.left = rect.left + 'px'; el.classList.toggle('show'); }\n" +
+    "window.onclick = function() { var e = document.getElementById('archDropdownMenu'); if(e) e.classList.remove('show'); };\n" +
+    "function toggleModal(show) { document.getElementById('instModal').style.display = show ? 'flex' : 'none'; }\n" +
+    "function startAuto(mode) { stopAuto(); isRunning = true; var queue = []; for(var i=0; i<rawWords.length; i++) queue.push(i); if(mode === 'random') queue.sort(function(){ return Math.random() - 0.5; }); var pos = 0; function play() { if(!isRunning || pos >= queue.length) { stopAuto(); return; } document.querySelectorAll('tbody tr').forEach(e=>e.classList.remove('playing-now')); var idx = queue[pos]; var rows = document.querySelectorAll('tbody tr'); if(rows[idx]) { rows[idx].classList.add('playing-now'); rows[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } window.speechSynthesis.cancel(); var utterance = new SpeechSynthesisUtterance(rawWords[idx]); utterance.lang = '" + selectedLang + "'; utterance.rate = document.getElementById('archSpeedRate').value; utterance.onend = function() { pos++; tTimeout = setTimeout(play, 1500); }; window.speechSynthesis.speak(utterance); } play(); }\n" +
+    "function stopAuto() { isRunning = false; clearTimeout(tTimeout); window.speechSynthesis.cancel(); document.querySelectorAll('tbody tr').forEach(e=>e.classList.remove('playing-now')); }";
 
-htmlContent += " <div class='menu-divider'></div>\n";
-htmlContent += " <button class='menu-item' " +
-"onclick='startAuto(\"sequence\")'>▶ По порядку</button>\n" +
-" <button class='menu-item' onclick='startAuto(\"random" +
-"\")'>🎲 Случайно</button>\n <button class='menu-item' " +
-"onclick='stopAuto()'>⏹ Стоп</button>\n <button class='" +
-"menu-item' onclick='toggleModal(true)' style='border-top:" +
-"1px solid #e2e8f0; color:#3b82f6;'>ℹ Инструкция</button>\n" +
-" </div>\n </div>\n</th>\n<th>Иностранное слово</th>\n";
+  htmlContent += "<script>" + scriptCode + "</" + "script></body></html>";
 
-if (currentFormat === 'with-trans') { 
-htmlContent += "<th>Транскрипция</th>\n"; 
-}
-htmlContent += "<th>Перевод</th>\n</tr>\n</thead>\n<tbody>\n";
-
-var rows = document.querySelectorAll('#tableBody tr');
-rows.forEach(function(row, idx) {
-var firstCell = row.querySelector('td');
-var wordCell = firstCell.nextElementSibling;
-var transCell = wordCell.nextElementSibling;
-var translationCell = transCell.nextElementSibling;
-var num = idx + 1;
-var wordText = wordCell.innerText.trim();
-var escapedWord = wordText.replace(/'/g, "\\'");
-
-htmlContent += "<tr>\n<td style='text-align:center; " +
-"color:#666;'>" + num + "</td>\n<td><span class='" +
-"clickable-word' onclick=\"speak('" + escapedWord + 
-"', this.parentNode.parentNode)\">" + wordText + "</span></td>\n";
-
-if (currentFormat === 'with-trans' && translationCell) {
-htmlContent += "<td class='transcription'>" + 
-transCell.innerText.trim() + "</td>\n<td>" + 
-translationCell.innerText.trim() + "</td>\n";
-} else {
-htmlContent += "<td>" + transCell.innerText.trim() + "</td>\n";
-}
-htmlContent += "</tr>\n";
-});
-
-htmlContent += "</tbody>\n</table>\n</div>\n</div>\n";
-htmlContent += "<div id='instModal' class='modal-overlay'>" +
-"\n<div class='modal-content'>\n<div class='modal-header" +
-"'><h2>Инструкция</h2><button class='modal-close-x' " +
-"onclick='toggleModal(false)'>×</button></div>\n" +
-"<div class='modal-body'>\n<ol>\n<li><b>Ручной режим:</b> " +
-"Кликайте по словам для озвучки.</li>\n<li><b>Авто:</b> " +
-"Кнопки 'По порядку' или 'Случайно' в меню ☰.</li>\n" +
-"<li><b>Стоп:</b> Кнопка 'Стоп'.</li>\n</ol>\n</div>\n" +
-"<div class='modal-footer'><button class='btn-understand' " +
-"onclick='toggleModal(false)'>Понятно</button></div>\n" +
-"</div>\n</div>\n<script>\nvar wordsList = [];\n" +
-"var tTimeout = null;\nvar isRunning = false;\n";
-
-var wordsArray = [];
-rows.forEach(function(row) {
-var firstCell = row.querySelector('td');
-wordsArray.push(firstCell.nextElementSibling.innerText.trim());
-});
-htmlContent += "var rawWords = " + JSON.stringify(wordsArray) + ";\n";
-htmlContent += "function speak(t, row) {\n " +
-"window.speechSynthesis.cancel();\n if(row) " +
-"{ clearHighlights(); row.classList.add('playing-now'); }\n" +
-" var u = new SpeechSynthesisUtterance(t);\n u.lang = '" + 
-selectedLang + "';\n u.rate = document.getElementById('archSpeedRate').value;\n window.speechSynthesis.speak(u);\n}\n";
-// КОНЕЦ ЧАСТИ 5
-
-htmlContent += "function toggleMenu(e, btn) {\n" +
-" if(e) { e.preventDefault(); e.stopPropagation(); }\n" +
-" var el = document.getElementById('archDropdownMenu');\n" +
-" if(!el) return;\n" +
-" var rect = btn.getBoundingClientRect();\n" +
-" el.style.top = rect.bottom + 'px';\n" +
-" el.style.left = rect.left + 'px';\n" +
-" el.classList.toggle('show');\n" +
-"}\n" +
-"window.onclick = function() { hideMenu(); };\n" +
-"window.onresize = function() { hideMenu(); };\n" +
-"document.addEventListener('DOMContentLoaded', function() {\n" +
-" var container = document.getElementById('archTableContainer');\n" +
-" if(container) container.addEventListener('scroll', hideMenu);\n" +
-" shadowMenuFix();\n" +
-"});\n" +
-"function hideMenu() {\n" +
-" var m = document.getElementById('archDropdownMenu');\n" +
-" if(m) m.classList.remove('show');\n" +
-"}\n" +
-"function shadowMenuFix() {\n" +
-" window.addEventListener('scroll', hideMenu);\n" +
-"}\n" +
-"function toggleModal(show) {\n" +
-" document.getElementById('instModal').style.display = " +
-"show ? 'flex' : 'none';\n" +
-"}\n" +
-"function clearHighlights() {\n" +
-" document.querySelectorAll('tbody tr').forEach(function(r){\n" +
-" r.classList.remove('playing-now');\n" +
-" });\n" +
-"}\n" +
-"function startAuto(mode) {\n" +
-" stopAuto(); isRunning = true; hideMenu(); var queue = [];\n" +
-" for(var i=0; i<rawWords.length; i++) queue.push(i);\n" +
-" if(mode === 'random') queue.sort(function(){\n" +
-" return Math.random() - 0.5;\n" +
-" });\n" +
-" var pos = 0; function play() {\n" +
-" if(!isRunning || pos >= queue.length) {\n" +
-" stopAuto(); return;\n" +
-" }\n" +
-" clearHighlights(); var idx = queue[pos];\n" +
-" var rows = document.querySelectorAll('tbody tr');\n" +
-" if(rows[idx]) {\n" +
-" rows[idx].classList.add('playing-now');\n" +
-" rows[idx].scrollIntoView({\n" +
-" behavior: 'smooth', block: 'nearest'\n" +
-" });\n" +
-" }\n" +
-" window.speechSynthesis.cancel();\n" +
-" var utterance = new SpeechSynthesisUtterance(rawWords[idx]);\n" +
-" utterance.lang = '" + selectedLang + "';\n" +
-" utterance.rate = " + archiveSpeed + ";\n" +
-" utterance.onend = function() {\n" +
-" pos++; tTimeout = setTimeout(play, 500);\n" +
-" };\n" +
-" window.speechSynthesis.speak(utterance);\n" +
-" } play();\n" +
-"}\n" +
-"function stopAuto() {\n" +
-" isRunning = false; clearTimeout(tTimeout);\n" +
-" window.speechSynthesis.cancel(); clearHighlights();\n" +
-"}\n" +
-"</" + "script>\n</body>\n</html>";
-
-var n = new Date();
-var dt = ("0" + n.getDate()).slice(-2) + "-" + 
-("0" + (n.getMonth() + 1)).slice(-2) + "-" + n.getFullYear();
-var blob = new Blob([htmlContent], {type: "text/html;charset=utf-8"});
-var link = document.createElement('a');
-link.href = URL.createObjectURL(blob);
-link.download = userFileName + "_" + dt + ".html";
-document.body.appendChild(link);
-link.click();
-document.body.removeChild(link);
+  var n = new Date(); var dt = ("0" + n.getDate()).slice(-2) + "-" + ("0" + (n.getMonth() + 1)).slice(-2) + "-" + n.getFullYear();
+  var blob = new Blob([htmlContent], {type: "text/html;charset=utf-8"});
+  var link = document.createElement('a'); link.href = URL.createObjectURL(blob);
+  link.download = userFileName + "_" + dt + ".html"; document.body.appendChild(link); link.click(); document.body.removeChild(link);
 }
 
-document.getElementById('fileInput').addEventListener(
-'change', 
-function(e) {
-var file = e.target.files.item(0);
-if (!file) return;
-stopTrainer();
-var reader = new FileReader();
-
-reader.onload = function(evt) {
-var content = evt.target.result;
-var lines = content.split('\n');
-loadedData = [];
-
-if (lines.length > 0 && lines) {
-originalHeaderTitle = lines.shift().trim();
-var firstLine = originalHeaderTitle.toLowerCase();
-var sel = document.getElementById('langSelect');
-if (firstLine.indexOf('английский') !== -1 || 
-firstLine.indexOf('сша') !== -1 || 
-firstLine.indexOf('english') !== -1) sel.value = 'en-US';
-else if (firstLine.indexOf('великобритания') !== -1 || 
-firstLine.indexOf('британский') !== -1) sel.value = 'en-GB';
-else if (firstLine.indexOf('французский') !== -1) sel.value = 'fr-FR';
-else if (firstLine.indexOf('немецкий') !== -1) sel.value = 'de-DE';
-else if (firstLine.indexOf('испанский') !== -1) sel.value = 'es-ES';
-else if (firstLine.indexOf('итальянский') !== -1) sel.value = 'it-IT';
-else if (firstLine.indexOf('китайский') !== -1) sel.value = 'zh-CN';
-}
-
-lines.forEach(function(line) {
-var trimmed = line.trim();
-if (trimmed.length === 0) return;
-trimmed = trimmed.split(' - ').join('-');
-var parts = trimmed.split('-');
-
-if (parts.length >= 3) {
-var w = parts.shift().trim();
-var trc = parts.shift().trim();
-var tl = parts.join('-').trim();
-loadedData.push({ word: w, trans: trc, translation: tl });
-} else if (parts.length >= 2) {
-var w = parts.shift().trim();
-var tl = parts.join('-').trim();
-loadedData.push({ word: w, trans: '', translation: tl });
-}
-});
-
-updateTableStructure();
-
-if (loadedData.length === 0) {
-alert('Ошибка чтения. Проверьте формат и дефисы.');
-}
-};
-reader.readAsText(file, 'UTF-8');
-this.value = '';
+document.getElementById('fileInput').addEventListener('change', function(e) {
+  var file = e.target.files.item(0); if (!file) return; stopTrainer(); var reader = new FileReader();
+  reader.onload = function(evt) {
+    var content = evt.target.result; 
+    var lines = content.split(/\r?\n/).map(function(line) {
+      return line.replace(/\\n/g, '').replace(/\\r/g, '').trim();
+    }).filter(function(line) { return line.length > 0; });
+    
+    loadedData = [];
+    if (lines.length > 0) {
+      originalHeaderTitle = lines.shift(); 
+      var firstLine = originalHeaderTitle.toLowerCase(); var sel = document.getElementById('langSelect');
+      if (firstLine.indexOf('английский') !== -1 || firstLine.indexOf('сша') !== -1 || firstLine.indexOf('english') !== -1) sel.value = 'en-US';
+      else if (firstLine.indexOf('великобритания') !== -1 || firstLine.indexOf('британский') !== -1) sel.value = 'en-GB';
+      else if (firstLine.indexOf('французский') !== -1) sel.value = 'fr-FR';
+      else if (firstLine.indexOf('немецкий') !== -1) sel.value = 'de-DE';
+      else if (firstLine.indexOf('испанский') !== -1) sel.value = 'es-ES';
+      else if (firstLine.indexOf('итальянский') !== -1) sel.value = 'it-IT';
+      else if (firstLine.indexOf('китайский') !== -1) sel.value = 'zh-CN';
+    }
+    lines.forEach(function(line) {
+      var trimmed = line.trim(); if (trimmed.length === 0) return; trimmed = trimmed.split(' - ').join('-'); var parts = trimmed.split('-');
+      if (parts.length >= 3) { var w = parts.shift().trim(); var trc = parts.shift().trim(); var tl = parts.join('-').trim(); loadedData.push({ word: w, trans: trc, translation: tl }); }
+      else if (parts.length >= 2) { var w = parts.shift().trim(); var tl = parts.join('-').trim(); loadedData.push({ word: w, trans: '', translation: tl }); }
+    });
+    updateTableStructure(); if (loadedData.length === 0) { alert('Ошибка чтения.'); }
+    var menu = document.getElementById('mainDropdownMenu'); if(menu) menu.classList.remove('show');
+  };
+  reader.readAsText(file, 'UTF-8'); this.value = '';
 });
 
 window.addEventListener('DOMContentLoaded', function() {
-updateTableStructure();
-var list = document.getElementById('instructionList');
-if(list) {
-instructionData.forEach(function(t) {
-var li = document.createElement('li');
-li.innerHTML = t;
-list.appendChild(li);
-});
-}
+  updateTableStructure(); var list = document.getElementById('instructionList');
+  if(list) { instructionData.forEach(function(t) { var li = document.createElement('li'); li.innerHTML = t; list.appendChild(li); }); }
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-var container = document.querySelector('.table-container');
-if(container) {
-container.addEventListener('scroll', function() {
-var menu = document.getElementById('mainDropdownMenu');
-if(menu) menu.classList.remove('show');
-});
-}
-window.addEventListener('scroll', function() {
-var menu = document.getElementById('mainDropdownMenu');
-if(menu) menu.classList.remove('show');
-});
+  var container = document.querySelector('.table-container');
+  if(container) { container.addEventListener('scroll', function() { var menu = document.getElementById('mainDropdownMenu'); if(menu) menu.classList.remove('show'); }); }
+  window.addEventListener('scroll', function() { var menu = document.getElementById('mainDropdownMenu'); if(menu) menu.classList.remove('show'); });
 });
 </script>
 </body>
 </html>
-
-
