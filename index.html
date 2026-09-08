@@ -53,6 +53,22 @@ tr.playing-now { background-color: #fef08a !important; }
 .modal-footer { padding: 12px; text-align: center; border-top: 1px solid #e5e7eb; }
 .btn-understand { background-color: #4a76a8; color: white; border: none; padding: 10px 30px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 13px; }
 .btn-understand:hover { background-color: #3b5e85; }
+/* Полный запрет на выделение текста и копирование мышкой */
+body {
+  -webkit-touch-callout: none; /* Отключает меню при долгом нажатии на iOS */
+  -webkit-user-select: none;   /* Safari */
+  -khtml-user-select: none;     /* Konqueror HTML */
+  -moz-user-select: none;       /* Firefox */
+  -ms-user-select: none;        /* Internet Explorer/Edge */
+  user-select: none;            /* Стандартный запрет для Chrome и Opera */
+}
+
+/* Запрещаем перетаскивание картинок и ссылок */
+img, a, span, table {
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+/* Конец Части 2 */
 </style>
 </head>
 <!--  КОНЕЦ ЧАСТИ 1  -->
@@ -402,4 +418,37 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 </body>
+<script>
+// Блокируем вызов контекстного меню (правую кнопку мыши)
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+});
+
+// Блокируем выделение текста на странице для защиты от копирования
+document.addEventListener('selectstart', function(e) {
+  e.preventDefault();
+});
+
+// Блокируем горячие клавиши сохранения и просмотра кода
+document.addEventListener('keydown', function(e) {
+  // Блокировка Ctrl + S (Сохранить)
+  if ((e.ctrlKey || e.metaKey) && e.keyCode === 83) {
+    e.preventDefault();
+    alert('Сохранение этой страницы ограничено. Используйте кнопку "Сохранить тренажёр" в меню!');
+    return false;
+  }
+  // Блокировка Ctrl + U (Просмотр исходного кода)
+  if ((e.ctrlKey || e.metaKey) && e.keyCode === 85) {
+    e.preventDefault();
+    return false;
+  }
+  // Блокировка F12 и Ctrl + Shift + I (Панель разработчика)
+  if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73)) {
+    e.preventDefault();
+    return false;
+  }
+});
+</script>
+<!-- Конец Части 1 -->
+
 </html>
